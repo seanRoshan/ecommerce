@@ -5,6 +5,8 @@ import com.seanroshan.ecommerce.entity.User;
 import com.seanroshan.ecommerce.repository.CartRepository;
 import com.seanroshan.ecommerce.repository.UserRepository;
 import com.seanroshan.ecommerce.request.CreateUserRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user")
 public class UserController {
 
+
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     public UserController(UserRepository userRepository, CartRepository cartRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
@@ -39,6 +45,7 @@ public class UserController {
         User user = new User();
         user.setUsername(createUserRequest.getUsername());
         Cart cart = new Cart();
+        logger.debug(cart.toString());
         cartRepository.save(cart);
         user.setCart(cart);
         if (createUserRequest.getPassword().length() < 7 ||
@@ -46,6 +53,7 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
         user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
+        logger.debug(user.toString());
         userRepository.save(user);
         return ResponseEntity.ok(user);
     }
