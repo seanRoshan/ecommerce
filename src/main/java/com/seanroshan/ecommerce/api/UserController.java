@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -30,7 +33,21 @@ public class UserController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
-        return ResponseEntity.of(userRepository.findById(id));
+        List<User> list = userRepository.findAll();
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
+                addField("DETAIL", "USER NOT FOUND");
+                setAuthAction("BAD REQUEST");
+            }}));
+            return ResponseEntity.notFound().build();
+        }
+        User user = userOptional.get();
+        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER RETURNED", "USER_RETURNED") {{
+            addField("DETAIL", user.toString());
+            setAuthAction("OK");
+        }}));
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{username}")
