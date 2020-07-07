@@ -36,7 +36,7 @@ public class UserControllerTest {
         CreateUserRequest request = new CreateUserRequest();
         request.setUsername("admin");
         request.setPassword("test_pass_2020");
-        request.setConfirmPassword("test_pass_2020");
+        request.setConfirmPassword("test_pass_20201");
 
         final ResponseEntity<User> response = userController.createUser(request);
 

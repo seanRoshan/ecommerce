@@ -31,6 +31,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res);
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+                addField("DETAIL", "ACCESS DENIED");
+                setAuthAction("EXCEPTION");
+            }}));
             return;
         }
 
@@ -52,8 +56,16 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+                addField("DETAIL", "ACCESS DENIED");
+                setAuthAction("EXCEPTION");
+            }}));
             return null;
         }
+        logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+            addField("DETAIL", "ACCESS DENIED");
+            setAuthAction("EXCEPTION");
+        }}));
         return null;
     }
 }
