@@ -11,10 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -31,13 +33,39 @@ public class UserController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
-        return ResponseEntity.of(userRepository.findById(id));
+        List<User> list = userRepository.findAll();
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()) {
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
+                addField("DETAIL", "USER NOT FOUND");
+                setAuthAction("BAD REQUEST");
+            }}));
+            return ResponseEntity.notFound().build();
+        }
+        User user = userOptional.get();
+        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER RETURNED", "USER_RETURNED") {{
+            addField("DETAIL", user.toString());
+            setAuthAction("OK");
+        }}));
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<User> findByUserName(@PathVariable String username) {
         User user = userRepository.findByUsername(username);
-        return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+        if (user == null) {
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
+                addField("DETAIL", "USER NOT FOUND");
+                setAuthAction("BAD REQUEST");
+            }}));
+            return ResponseEntity.notFound().build();
+        } else {
+            logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER RETURNED", "USER_RETURNED") {{
+                addField("DETAIL", user.toString());
+                setAuthAction("OK");
+            }}));
+            return ResponseEntity.ok(user);
+        }
     }
 
     @PostMapping("/create")
@@ -45,16 +73,28 @@ public class UserController {
         User user = new User();
         user.setUsername(createUserRequest.getUsername());
         Cart cart = new Cart();
-        logger.debug(cart.toString());
         cartRepository.save(cart);
         user.setCart(cart);
-        if (createUserRequest.getPassword().length() < 7 ||
+        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("CART CREATED", "CART_CREATE_SUCCESS") {{
+            addField("DETAIL", cart.toString());
+            setAuthAction("OK");
+        }}));
+        if (createUserRequest.getPassword() == null ||
+                createUserRequest.getConfirmPassword() == null ||
+                createUserRequest.getPassword().length() < 7 ||
                 !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("INVALID PASSWORD", "USER_CREATE_INVALID_PASSWORD") {{
+                addField("DETAIL", "PASSWORD MUST BE MORE THAN 7 CHARACTER AND MATCH WITH CONFIRM PASSWORD");
+                setAuthAction("BAD REQUEST");
+            }}));
             return ResponseEntity.badRequest().build();
         }
         user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
-        logger.debug(user.toString());
         userRepository.save(user);
+        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER CREATED", "USER_CREATE_SUCCESS") {{
+            addField("DETAIL", user.toString());
+            setAuthAction("OK");
+        }}));
         return ResponseEntity.ok(user);
     }
 

@@ -3,6 +3,8 @@ package com.seanroshan.ecommerce.security;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seanroshan.ecommerce.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,8 @@ import static com.seanroshan.ecommerce.security.SecurityConstants.SECRET;
 
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+    private final Logger logger = LoggerFactory.getLogger(JWTAuthenticationFilter.class);
 
     private final AuthenticationManager authenticationManager;
 
@@ -43,6 +47,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             new ArrayList<>())
             );
         } catch (IOException e) {
+            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+                addField("DETAIL", e.getMessage());
+                setAuthAction("EXCEPTION");
+            }}));
             throw new RuntimeException(e);
         }
     }
