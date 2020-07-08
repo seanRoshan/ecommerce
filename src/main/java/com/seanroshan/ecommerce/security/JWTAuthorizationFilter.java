@@ -2,6 +2,7 @@ package com.seanroshan.ecommerce.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.seanroshan.ecommerce.splunk.SplunkCimLogEvent;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +32,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res);
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
                 addField("DETAIL", "ACCESS DENIED");
                 setAuthAction("EXCEPTION");
             }}));
@@ -56,13 +57,13 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
             }
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
                 addField("DETAIL", "ACCESS DENIED");
                 setAuthAction("EXCEPTION");
             }}));
             return null;
         }
-        logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+        logger.error(String.valueOf(new SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
             addField("DETAIL", "ACCESS DENIED");
             setAuthAction("EXCEPTION");
         }}));

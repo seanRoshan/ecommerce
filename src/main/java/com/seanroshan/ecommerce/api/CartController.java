@@ -7,6 +7,7 @@ import com.seanroshan.ecommerce.repository.CartRepository;
 import com.seanroshan.ecommerce.repository.ItemRepository;
 import com.seanroshan.ecommerce.repository.UserRepository;
 import com.seanroshan.ecommerce.request.ModifyCartRequest;
+import com.seanroshan.ecommerce.splunk.SplunkCimLogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class CartController {
         }
         Optional<Item> item = itemRepository.findById(request.getItemId());
         if (!item.isPresent()) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
                 addField("DETAIL", "ITEM NOT FOUND");
                 setAuthAction("NOT FOUND");
             }}));
@@ -53,7 +54,7 @@ public class CartController {
         IntStream.range(0, request.getQuantity())
                 .forEach(i -> cart.addItem(item.get()));
         cartRepository.save(cart);
-        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("ADD TO CART", "ADD_TO_CART") {{
+        logger.info(String.valueOf(new SplunkCimLogEvent("ADD TO CART", "ADD_TO_CART") {{
             addField("DETAIL", cart.toString());
             setAuthAction("OK");
         }}));
@@ -68,7 +69,7 @@ public class CartController {
         }
         Optional<Item> item = itemRepository.findById(request.getItemId());
         if (!item.isPresent()) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
                 addField("DETAIL", "ITEM NOT FOUND");
                 setAuthAction("NOT FOUND");
             }}));
@@ -78,7 +79,7 @@ public class CartController {
         IntStream.range(0, request.getQuantity())
                 .forEach(i -> cart.removeItem(item.get()));
         cartRepository.save(cart);
-        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("REMOVE FROM CART", "REMOVE_FROM_CART") {{
+        logger.info(String.valueOf(new SplunkCimLogEvent("REMOVE FROM CART", "REMOVE_FROM_CART") {{
             addField("DETAIL", cart.toString());
             setAuthAction("OK");
         }}));
@@ -87,7 +88,7 @@ public class CartController {
 
     private boolean checkUserExistence(User user) {
         if (user == null) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
                 addField("DETAIL", "USER NOT FOUND");
                 setAuthAction("BAD REQUEST");
             }}));

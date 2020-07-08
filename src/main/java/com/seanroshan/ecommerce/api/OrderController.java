@@ -4,6 +4,7 @@ import com.seanroshan.ecommerce.entity.User;
 import com.seanroshan.ecommerce.entity.UserOrder;
 import com.seanroshan.ecommerce.repository.OrderRepository;
 import com.seanroshan.ecommerce.repository.UserRepository;
+import com.seanroshan.ecommerce.splunk.SplunkCimLogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         UserOrder order = UserOrder.createFromCart(user.getCart());
         orderRepository.save(order);
-        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("ORDER SAVED", "ORDER_SAVED") {{
+        logger.info(String.valueOf(new SplunkCimLogEvent("ORDER SAVED", "ORDER_SAVED") {{
             addField("DETAIL", order.toString());
             setAuthAction("OK");
         }}));
@@ -46,7 +47,7 @@ public class OrderController {
         if (!checkUserExistence(user))
             return ResponseEntity.notFound().build();
         List<UserOrder> orderHistory = orderRepository.findByUser(user);
-        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("GET ORDER HISTORY", "GET_ORDER_HISTORY") {{
+        logger.info(String.valueOf(new SplunkCimLogEvent("GET ORDER HISTORY", "GET_ORDER_HISTORY") {{
             addField("DETAIL", orderHistory.toString());
             setAuthAction("OK");
         }}));
@@ -55,7 +56,7 @@ public class OrderController {
 
     private boolean checkUserExistence(User user) {
         if (user == null) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("USER NOT FOUND", "USER_NOT_FOUND") {{
                 addField("DETAIL", "USER NOT FOUND");
                 setAuthAction("BAD REQUEST");
             }}));

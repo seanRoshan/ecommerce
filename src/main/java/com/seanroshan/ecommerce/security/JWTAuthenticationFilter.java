@@ -3,6 +3,7 @@ package com.seanroshan.ecommerce.security;
 import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seanroshan.ecommerce.entity.User;
+import com.seanroshan.ecommerce.splunk.SplunkCimLogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,7 +48,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                             new ArrayList<>())
             );
         } catch (IOException e) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("AUTHORIZATION FAILED", "AUTHORIZATION FAILED") {{
                 addField("DETAIL", e.getMessage());
                 setAuthAction("EXCEPTION");
             }}));
@@ -59,7 +60,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest req,
                                             HttpServletResponse res,
                                             FilterChain chain,
-                                            Authentication auth) throws IOException, ServletException {
+                                            Authentication auth) {
         String token = JWT.create()
                 .withSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))

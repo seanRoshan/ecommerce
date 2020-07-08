@@ -2,6 +2,7 @@ package com.seanroshan.ecommerce.api;
 
 import com.seanroshan.ecommerce.entity.Item;
 import com.seanroshan.ecommerce.repository.ItemRepository;
+import com.seanroshan.ecommerce.splunk.SplunkCimLogEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,13 @@ public class ItemController {
     public ResponseEntity<Item> getItemById(@PathVariable Long id) {
         Optional<Item> item = itemRepository.findById(id);
         if (!item.isPresent()) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
                 addField("DETAIL", "ITEM NOT FOUND");
                 setAuthAction("NOT FOUND");
             }}));
             return ResponseEntity.notFound().build();
         }
-        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("GET ORDER HISTORY", "GET_ORDER_HISTORY") {{
+        logger.info(String.valueOf(new SplunkCimLogEvent("GET ORDER HISTORY", "GET_ORDER_HISTORY") {{
             addField("DETAIL", item.toString());
             setAuthAction("OK");
         }}));
@@ -51,13 +52,13 @@ public class ItemController {
     public ResponseEntity<List<Item>> getItemsByName(@PathVariable String name) {
         List<Item> items = itemRepository.findByName(name);
         if (items == null || items.isEmpty()) {
-            logger.error(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
+            logger.error(String.valueOf(new SplunkCimLogEvent("ITEM NOT FOUND", "ITEM NOT FOUND") {{
                 addField("DETAIL", "ITEM NOT FOUND");
                 setAuthAction("NOT FOUND");
             }}));
             return ResponseEntity.notFound().build();
         }
-        logger.info(String.valueOf(new com.splunk.logging.SplunkCimLogEvent("GET ORDER HISTORY", "GET_ORDER_HISTORY") {{
+        logger.info(String.valueOf(new SplunkCimLogEvent("GET ORDER HISTORY", "GET_ORDER_HISTORY") {{
             addField("DETAIL", items.toString());
             setAuthAction("OK");
         }}));

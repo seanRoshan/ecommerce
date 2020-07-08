@@ -1,4 +1,4 @@
-package com.splunk.logging;
+package com.seanroshan.ecommerce.splunk;
 
 /*
  * Copyright 2013-2014 Splunk, Inc.
@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 
 /**
  * <code>SplunkCimLogEvent</code> encapsulates the best practice logging semantics recommended by Splunk.
- *
+ * <p>
  * It produces events of key, value pairs, properly formatted and quoted for logging with any of Java's standard
  * logging libraries (logback, log4j, java.util.logging, etc.) and indexing by Splunk. The class has convenience
  * methods to set the fields defined in the standard Splunk Common Information Model.
@@ -38,13 +38,13 @@ import java.util.regex.Pattern;
  * event.addField("somefieldname", "foobar");
  * logger.info(event.toString());
  * </code>
- * 
+ *
  * @see <a
- *      href="http://docs.splunk.com/Documentation/Splunk/latest/Knowledge/UnderstandandusetheCommonInformationModel">Splunk
- *      CIM</a>
+ * href="http://docs.splunk.com/Documentation/Splunk/latest/Knowledge/UnderstandandusetheCommonInformationModel">Splunk
+ * CIM</a>
  * @see <a
- *      href="http://dev.splunk.com/view/logging-best-practices/SP-CAAADP6">Splunk
- *      Logging Best Practices</a>
+ * href="http://dev.splunk.com/view/logging-best-practices/SP-CAAADP6">Splunk
+ * Logging Best Practices</a>
  */
 public class SplunkCimLogEvent {
     /**
@@ -58,10 +58,10 @@ public class SplunkCimLogEvent {
 
     /**
      * @param eventName event name
-     * @param eventID event ID
+     * @param eventID   event ID
      */
     public SplunkCimLogEvent(String eventName, String eventID) {
-        entries = new LinkedHashMap<String, Object>();
+        entries = new LinkedHashMap<>();
 
         addField(PREFIX_NAME, eventName);
         addField(PREFIX_EVENT_ID, eventID);
@@ -70,10 +70,10 @@ public class SplunkCimLogEvent {
     /**
      * Add a key value pair. The value may be any Java object which returns a sensible
      * result from its <code>toString</code> method.
-     *
+     * <p>
      * For logging exceptions, consider using <code>addThrowableWithStacktrace</code> instead.
      *
-     * @param key key
+     * @param key   key
      * @param value value
      */
     public void addField(String key, Object value) {
@@ -83,8 +83,7 @@ public class SplunkCimLogEvent {
     /**
      * Logs an exception with its stacktrace nicely formatted for indexing and searching by Splunk.
      *
-     * @param throwable
-     *            the Throwable object to add to the event
+     * @param throwable the Throwable object to add to the event
      */
     public void addThrowableWithStacktrace(Throwable throwable) {
 
@@ -95,11 +94,8 @@ public class SplunkCimLogEvent {
      * Logs an exception with the first <code>stacktraceDepth</code> elements of its stacktrace nicely
      * formatted for indexing and searching by Splunk,
      *
-     *
-     * @param throwable
-     *            the Throwable object to add to the event
-     * @param stacktraceDepth
-     *            maximum number of stacktrace elements to log
+     * @param throwable       the Throwable object to add to the event
+     * @param stacktraceDepth maximum number of stacktrace elements to log
      */
 
     public void addThrowableWithStacktrace(Throwable throwable, int stacktraceDepth) {
@@ -120,6 +116,7 @@ public class SplunkCimLogEvent {
     }
 
     private static final Pattern DOUBLE_QUOTE = Pattern.compile("\"");
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
@@ -157,10 +154,6 @@ public class SplunkCimLogEvent {
     private static final String THROWABLE_MESSAGE = "throwable_message";
     private static final String THROWABLE_STACKTRACE_ELEMENTS = "stacktrace_elements";
 
-    /**
-     * Splunk Common Information Model(CIM) Fields
-     */
-
     // ------------------
     // Account management
     // ------------------
@@ -171,6 +164,7 @@ public class SplunkCimLogEvent {
     public void setAcManagementDestNtDomain(String acManagementDestNtDomain) {
         addField(AC_MANAGEMENT_DEST_NT_DOMAIN, acManagementDestNtDomain);
     }
+
     public static String AC_MANAGEMENT_DEST_NT_DOMAIN = "dest_nt_domain";
 
     /**
@@ -179,6 +173,7 @@ public class SplunkCimLogEvent {
     public void setAcManagementSignature(String acManagementSignature) {
         addField(AC_MANAGEMENT_SIGNATURE, acManagementSignature);
     }
+
     public static String AC_MANAGEMENT_SIGNATURE = "signature";
 
     /**
@@ -189,6 +184,7 @@ public class SplunkCimLogEvent {
     public void setAcManagementSrcNtDomain(String acManagementSrcNtDomain) {
         addField(AC_MANAGEMENT_SRC_NT_DOMAIN, acManagementSrcNtDomain);
     }
+
     public static String AC_MANAGEMENT_SRC_NT_DOMAIN = "src_nt_domain";
 
     // ----------------------------------
@@ -201,13 +197,16 @@ public class SplunkCimLogEvent {
     public void setAuthAction(String authAction) {
         addField(AUTH_ACTION, authAction);
     }
+
     public static String AUTH_ACTION = "action";
+
     /**
      * The application involved in the event (such as ssh, spunk, win:local).
      */
     public void setAuthApp(String authApp) {
         addField(AUTH_APP, authApp);
     }
+
     public static String AUTH_APP = "app";
 
     /**
@@ -218,6 +217,7 @@ public class SplunkCimLogEvent {
     public void setAuthDest(String authDest) {
         addField(AUTH_DEST, authDest);
     }
+
     public static String AUTH_DEST = "dest";
 
     /**
@@ -232,6 +232,7 @@ public class SplunkCimLogEvent {
     public void setAuthSrc(String authSrc) {
         addField(AUTH_SRC, authSrc);
     }
+
     public static String AUTH_SRC = "src";
 
     /**
@@ -241,6 +242,7 @@ public class SplunkCimLogEvent {
     public void setAuthSrcUser(String authSrcUser) {
         addField(AUTH_SRC_USER, authSrcUser);
     }
+
     public static String AUTH_SRC_USER = "src_user";
 
     /**
@@ -251,6 +253,7 @@ public class SplunkCimLogEvent {
     public void setAuthUser(String authUser) {
         addField(AUTH_USER, authUser);
     }
+
     public static String AUTH_USER = "user";
 
     // ----------------------------------
@@ -265,6 +268,7 @@ public class SplunkCimLogEvent {
         addField(CHANGE_ENDPOINT_PROTECTION_ACTION,
                 changeEndpointProtectionAction);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_ACTION = "action";
 
     /**
@@ -275,6 +279,7 @@ public class SplunkCimLogEvent {
         addField(CHANGE_ENDPOINT_PROTECTION_CHANGE_TYPE,
                 changeEndpointProtectionChangeType);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_CHANGE_TYPE = "change_type";
 
     /**
@@ -286,6 +291,7 @@ public class SplunkCimLogEvent {
             String changeEndpointProtectionDest) {
         addField(CHANGE_ENDPOINT_PROTECTION_DEST, changeEndpointProtectionDest);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_DEST = "dest";
 
     /**
@@ -295,6 +301,7 @@ public class SplunkCimLogEvent {
             String changeEndpointProtectionHash) {
         addField(CHANGE_ENDPOINT_PROTECTION_HASH, changeEndpointProtectionHash);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_HASH = "hash";
 
     /**
@@ -303,6 +310,7 @@ public class SplunkCimLogEvent {
     public void setChangeEndpointProtectionGid(long changeEndpointProtectionGid) {
         addField(CHANGE_ENDPOINT_PROTECTION_GID, changeEndpointProtectionGid);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_GID = "gid";
 
     /**
@@ -312,6 +320,7 @@ public class SplunkCimLogEvent {
             boolean changeEndpointProtectionIsdr) {
         addField(CHANGE_ENDPOINT_PROTECTION_ISDR, changeEndpointProtectionIsdr);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_ISDR = "isdr";
 
     /**
@@ -321,6 +330,7 @@ public class SplunkCimLogEvent {
             long changeEndpointProtectionMode) {
         addField(CHANGE_ENDPOINT_PROTECTION_MODE, changeEndpointProtectionMode);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_MODE = "mode";
 
     /**
@@ -331,6 +341,7 @@ public class SplunkCimLogEvent {
         addField(CHANGE_ENDPOINT_PROTECTION_MODTIME,
                 changeEndpointProtectionModtime);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_MODTIME = "modtime";
 
     /**
@@ -340,6 +351,7 @@ public class SplunkCimLogEvent {
             String changeEndpointProtectionPath) {
         addField(CHANGE_ENDPOINT_PROTECTION_PATH, changeEndpointProtectionPath);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_PATH = "path";
 
     /**
@@ -349,6 +361,7 @@ public class SplunkCimLogEvent {
             long changeEndpointProtectionSize) {
         addField(CHANGE_ENDPOINT_PROTECTION_SIZE, changeEndpointProtectionSize);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_SIZE = "size";
 
     /**
@@ -357,6 +370,7 @@ public class SplunkCimLogEvent {
     public void setChangeEndpointProtectionUid(long changeEndpointProtectionUid) {
         addField(CHANGE_ENDPOINT_PROTECTION_UID, changeEndpointProtectionUid);
     }
+
     public static String CHANGE_ENDPOINT_PROTECTION_UID = "uid";
 
     // ----------------------------------
@@ -370,6 +384,7 @@ public class SplunkCimLogEvent {
             String changeNetworkProtectionAction) {
         addField(CHANGE_NETWORK_PROTECTION_ACTION, changeNetworkProtectionAction);
     }
+
     public static String CHANGE_NETWORK_PROTECTION_ACTION = "action";
 
     /**
@@ -380,6 +395,7 @@ public class SplunkCimLogEvent {
         addField(CHANGE_NETWORK_PROTECTION_COMMAND,
                 changeNetworkProtectionCommand);
     }
+
     public static String CHANGE_NETWORK_PROTECTION_COMMAND = "command";
 
     /**
@@ -388,6 +404,7 @@ public class SplunkCimLogEvent {
     public void setChangeNetworkProtectionDvc(String changeNetworkProtectionDvc) {
         addField(CHANGE_NETWORK_PROTECTION_DVC, changeNetworkProtectionDvc);
     }
+
     public static String CHANGE_NETWORK_PROTECTION_DVC = "dvc";
 
     /**
@@ -397,6 +414,7 @@ public class SplunkCimLogEvent {
             String changeNetworkProtectionUser) {
         addField(CHANGE_NETWORK_PROTECTION_USER, changeNetworkProtectionUser);
     }
+
     public static String CHANGE_NETWORK_PROTECTION_USER = "user";
 
     // ----------------------------------
@@ -409,6 +427,7 @@ public class SplunkCimLogEvent {
     public void setCommonCategory(String commonCategory) {
         addField(COMMON_CATEGORY, commonCategory);
     }
+
     public static String COMMON_CATEGORY = "category";
 
     /**
@@ -417,6 +436,7 @@ public class SplunkCimLogEvent {
     public void setCommonCount(String commonCount) {
         addField(COMMON_COUNT, commonCount);
     }
+
     public static String COMMON_COUNT = "count";
 
     /**
@@ -425,6 +445,7 @@ public class SplunkCimLogEvent {
     public void setCommonDesc(String commonDesc) {
         addField(COMMON_DESC, commonDesc);
     }
+
     public static String COMMON_DESC = "desc";
 
     /**
@@ -433,6 +454,7 @@ public class SplunkCimLogEvent {
     public void setCommonDhcpPool(String commonDhcpPool) {
         addField(COMMON_DHCP_POOL, commonDhcpPool);
     }
+
     public static String COMMON_DHCP_POOL = "dhcp_pool";
 
     /**
@@ -441,6 +463,7 @@ public class SplunkCimLogEvent {
     public void setCommonDuration(long commonDuration) {
         addField(COMMON_DURATION, commonDuration);
     }
+
     public static String COMMON_DURATION = "duration";
 
     /**
@@ -450,6 +473,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcHost(String commonDvcHost) {
         addField(COMMON_DVC_HOST, commonDvcHost);
     }
+
     public static String COMMON_DVC_HOST = "dvc_host";
 
     /**
@@ -458,6 +482,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcIp(String commonDvcIp) {
         addField(COMMON_DVC_IP, commonDvcIp);
     }
+
     public static String COMMON_DVC_IP = "dvc_ip";
 
     /**
@@ -466,6 +491,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcIp6(String commonDvcIp6) {
         addField(COMMON_DVC_IP6, commonDvcIp6);
     }
+
     public static String COMMON_DVC_IP6 = "dvc_ip6";
 
     /**
@@ -474,6 +500,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcLocation(String commonDvcLocation) {
         addField(COMMON_DVC_LOCATION, commonDvcLocation);
     }
+
     public static String COMMON_DVC_LOCATION = "dvc_location";
 
     /**
@@ -482,6 +509,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcMac(String commonDvcMac) {
         addField(COMMON_DVC_MAC, commonDvcMac);
     }
+
     public static String COMMON_DVC_MAC = "dvc_mac";
 
     /**
@@ -490,6 +518,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcNtDomain(String commonDvcNtDomain) {
         addField(COMMON_DVC_NT_DOMAIN, commonDvcNtDomain);
     }
+
     public static String COMMON_DVC_NT_DOMAIN = "dvc_nt_domain";
 
     /**
@@ -499,6 +528,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcNtHost(String commonDvcNtHost) {
         addField(COMMON_DVC_NT_HOST, commonDvcNtHost);
     }
+
     public static String COMMON_DVC_NT_HOST = "dvc_nt_host";
 
     /**
@@ -507,6 +537,7 @@ public class SplunkCimLogEvent {
     public void setCommonDvcTime(long commonDvcTime) {
         addField(COMMON_DVC_TIME, commonDvcTime);
     }
+
     public static String COMMON_DVC_TIME = "dvc_time";
 
     /**
@@ -515,6 +546,7 @@ public class SplunkCimLogEvent {
     public void setCommonEndTime(long commonEndTime) {
         addField(COMMON_END_TIME, commonEndTime);
     }
+
     public static String COMMON_END_TIME = "end_time";
 
     /**
@@ -524,6 +556,7 @@ public class SplunkCimLogEvent {
     public void setCommonEventId(long commonEventId) {
         addField(COMMON_EVENT_ID, commonEventId);
     }
+
     public static String COMMON_EVENT_ID = "event_id";
 
     /**
@@ -532,6 +565,7 @@ public class SplunkCimLogEvent {
     public void setCommonLength(long commonLength) {
         addField(COMMON_LENGTH, commonLength);
     }
+
     public static String COMMON_LENGTH = "length";
 
     /**
@@ -540,6 +574,7 @@ public class SplunkCimLogEvent {
     public void setCommonLogLevel(String commonLogLevel) {
         addField(COMMON_LOG_LEVEL, commonLogLevel);
     }
+
     public static String COMMON_LOG_LEVEL = "log_level";
 
     /**
@@ -550,6 +585,7 @@ public class SplunkCimLogEvent {
     public void setCommonName(String commonName) {
         addField(COMMON_NAME, commonName);
     }
+
     public static String COMMON_NAME = "name";
 
     /**
@@ -559,6 +595,7 @@ public class SplunkCimLogEvent {
     public void setCommonPid(long commonPid) {
         addField(COMMON_PID, commonPid);
     }
+
     public static String COMMON_PID = "pid";
 
     /**
@@ -569,6 +606,7 @@ public class SplunkCimLogEvent {
     public void setCommonPriority(long commonPriority) {
         addField(COMMON_PRIORITY, commonPriority);
     }
+
     public static String COMMON_PRIORITY = "priority";
 
     /**
@@ -577,6 +615,7 @@ public class SplunkCimLogEvent {
     public void setCommonProduct(String commonProduct) {
         addField(COMMON_PRODUCT, commonProduct);
     }
+
     public static String COMMON_PRODUCT = "product";
 
     /**
@@ -585,6 +624,7 @@ public class SplunkCimLogEvent {
     public void setCommonProductVersion(long commonProductVersion) {
         addField(COMMON_PRODUCT_VERSION, commonProductVersion);
     }
+
     public static String COMMON_PRODUCT_VERSION = "product_version";
 
     /**
@@ -594,6 +634,7 @@ public class SplunkCimLogEvent {
     public void setCommonReason(String commonReason) {
         addField(COMMON_REASON, commonReason);
     }
+
     public static String COMMON_REASON = "reason";
 
     /**
@@ -603,6 +644,7 @@ public class SplunkCimLogEvent {
     public void setCommonResult(String commonResult) {
         addField(COMMON_RESULT, commonResult);
     }
+
     public static String COMMON_RESULT = "result";
 
     /**
@@ -612,6 +654,7 @@ public class SplunkCimLogEvent {
     public void setCommonSeverity(String commonSeverity) {
         addField(COMMON_SEVERITY, commonSeverity);
     }
+
     public static String COMMON_SEVERITY = "severity";
 
     /**
@@ -620,6 +663,7 @@ public class SplunkCimLogEvent {
     public void setCommonStartTime(long commonStartTime) {
         addField(COMMON_START_TIME, commonStartTime);
     }
+
     public static String COMMON_START_TIME = "start_time";
 
     /**
@@ -628,6 +672,7 @@ public class SplunkCimLogEvent {
     public void setCommonTransactionId(String commonTransactionId) {
         addField(COMMON_TRANSACTION_ID, commonTransactionId);
     }
+
     public static String COMMON_TRANSACTION_ID = "transaction_id";
 
     /**
@@ -637,6 +682,7 @@ public class SplunkCimLogEvent {
     public void setCommonUrl(String commonUrl) {
         addField(COMMON_URL, commonUrl);
     }
+
     public static String COMMON_URL = "url";
 
     /**
@@ -645,6 +691,7 @@ public class SplunkCimLogEvent {
     public void setCommonVendor(String commonVendor) {
         addField(COMMON_VENDOR, commonVendor);
     }
+
     public static String COMMON_VENDOR = "vendor";
 
     // ----------------------------------
@@ -657,6 +704,7 @@ public class SplunkCimLogEvent {
     public void setDnsDestDomain(String dnsDestDomain) {
         addField(DNS_DEST_DOMAIN, dnsDestDomain);
     }
+
     public static String DNS_DEST_DOMAIN = "dest_domain";
 
     /**
@@ -665,6 +713,7 @@ public class SplunkCimLogEvent {
     public void setDnsDestRecord(String dnsDestRecord) {
         addField(DNS_DEST_RECORD, dnsDestRecord);
     }
+
     public static String DNS_DEST_RECORD = "dest_record";
 
     /**
@@ -674,6 +723,7 @@ public class SplunkCimLogEvent {
     public void setDnsDestZone(String dnsDestZone) {
         addField(DNS_DEST_ZONE, dnsDestZone);
     }
+
     public static String DNS_DEST_ZONE = "dest_zone";
 
     /**
@@ -682,18 +732,20 @@ public class SplunkCimLogEvent {
     public void setDnsRecordClass(String dnsRecordClass) {
         addField(DNS_RECORD_CLASS, dnsRecordClass);
     }
+
     public static String DNS_RECORD_CLASS = "record_class";
 
     /**
      * The DNS resource record type.
-     * 
+     *
      * @see <a
-     *      href="https://secure.wikimedia.org/wikipedia/en/wiki/List_of_DNS_record_types">see
-     *      this Wikipedia article on DNS record types</a>
+     * href="https://secure.wikimedia.org/wikipedia/en/wiki/List_of_DNS_record_types">see
+     * this Wikipedia article on DNS record types</a>
      */
     public void setDnsRecordType(String dnsRecordType) {
         addField(DNS_RECORD_TYPE, dnsRecordType);
     }
+
     public static String DNS_RECORD_TYPE = "record_type";
 
     /**
@@ -702,6 +754,7 @@ public class SplunkCimLogEvent {
     public void setDnsSrcDomain(String dnsSrcDomain) {
         addField(DNS_SRC_DOMAIN, dnsSrcDomain);
     }
+
     public static String DNS_SRC_DOMAIN = "src_domain";
 
     /**
@@ -710,6 +763,7 @@ public class SplunkCimLogEvent {
     public void setDnsSrcRecord(String dnsSrcRecord) {
         addField(DNS_SRC_RECORD, dnsSrcRecord);
     }
+
     public static String DNS_SRC_RECORD = "src_record";
 
     /**
@@ -719,6 +773,7 @@ public class SplunkCimLogEvent {
     public void setDnsSrcZone(String dnsSrcZone) {
         addField(DNS_SRC_ZONE, dnsSrcZone);
     }
+
     public static String DNS_SRC_ZONE = "src_zone";
 
     // ----------------------------------
@@ -731,6 +786,7 @@ public class SplunkCimLogEvent {
     public void setEmailRecipient(String emailRecipient) {
         addField(EMAIL_RECIPIENT, emailRecipient);
     }
+
     public static String EMAIL_RECIPIENT = "recipient";
 
     /**
@@ -739,6 +795,7 @@ public class SplunkCimLogEvent {
     public void setEmailSender(String emailSender) {
         addField(EMAIL_SENDER, emailSender);
     }
+
     public static String EMAIL_SENDER = "sender";
 
     /**
@@ -747,6 +804,7 @@ public class SplunkCimLogEvent {
     public void setEmailSubject(String emailSubject) {
         addField(EMAIL_SUBJECT, emailSubject);
     }
+
     public static String EMAIL_SUBJECT = "subject";
 
     // ----------------------------------
@@ -759,6 +817,7 @@ public class SplunkCimLogEvent {
     public void setFileAccessTime(long fileAccessTime) {
         addField(FILE_ACCESS_TIME, fileAccessTime);
     }
+
     public static String FILE_ACCESS_TIME = "file_access_time";
 
     /**
@@ -767,6 +826,7 @@ public class SplunkCimLogEvent {
     public void setFileCreateTime(long fileCreateTime) {
         addField(FILE_CREATE_TIME, fileCreateTime);
     }
+
     public static String FILE_CREATE_TIME = "file_create_time";
 
     /**
@@ -776,6 +836,7 @@ public class SplunkCimLogEvent {
     public void setFileHash(String fileHash) {
         addField(FILE_HASH, fileHash);
     }
+
     public static String FILE_HASH = "file_hash";
 
     /**
@@ -784,6 +845,7 @@ public class SplunkCimLogEvent {
     public void setFileModifyTime(long fileModifyTime) {
         addField(FILE_MODIFY_TIME, fileModifyTime);
     }
+
     public static String FILE_MODIFY_TIME = "file_modify_time";
 
     /**
@@ -793,6 +855,7 @@ public class SplunkCimLogEvent {
     public void setFileName(String fileName) {
         addField(FILE_NAME, fileName);
     }
+
     public static String FILE_NAME = "file_name";
 
     /**
@@ -802,6 +865,7 @@ public class SplunkCimLogEvent {
     public void setFilePath(String filePath) {
         addField(FILE_PATH, filePath);
     }
+
     public static String FILE_PATH = "file_path";
 
     /**
@@ -810,6 +874,7 @@ public class SplunkCimLogEvent {
     public void setFilePermission(String filePermission) {
         addField(FILE_PERMISSION, filePermission);
     }
+
     public static String FILE_PERMISSION = "file_permission";
 
     /**
@@ -819,6 +884,7 @@ public class SplunkCimLogEvent {
     public void setFileSize(long fileSize) {
         addField(FILE_SIZE, fileSize);
     }
+
     public static String FILE_SIZE = "file_size";
 
     // ----------------------------------
@@ -831,6 +897,7 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionCategory(String intrusionDetectionCategory) {
         addField(INTRUSION_DETECTION_CATEGORY, intrusionDetectionCategory);
     }
+
     public static String INTRUSION_DETECTION_CATEGORY = "category";
 
     /**
@@ -841,6 +908,7 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionDest(String intrusionDetectionDest) {
         addField(INTRUSION_DETECTION_DEST, intrusionDetectionDest);
     }
+
     public static String INTRUSION_DETECTION_DEST = "dest";
 
     /**
@@ -849,6 +917,7 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionDvc(String intrusionDetectionDvc) {
         addField(INTRUSION_DETECTION_DVC, intrusionDetectionDvc);
     }
+
     public static String INTRUSION_DETECTION_DVC = "dvc";
 
     /**
@@ -857,12 +926,13 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionIdsType(String intrusionDetectionIdsType) {
         addField(INTRUSION_DETECTION_IDS_TYPE, intrusionDetectionIdsType);
     }
+
     public static String INTRUSION_DETECTION_IDS_TYPE = "ids_type";
 
     /**
      * The product name of the vendor technology generating network protection
      * data, such as IDP, Providentia, and ASA.
-     * 
+     * <p>
      * Note: Required for all events dealing with network protection (Change
      * analysis, proxy, malware, intrusion detection, packet filtering, and
      * vulnerability).
@@ -870,18 +940,20 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionProduct(String intrusionDetectionProduct) {
         addField(INTRUSION_DETECTION_PRODUCT, intrusionDetectionProduct);
     }
+
     public static String INTRUSION_DETECTION_PRODUCT = "product";
 
     /**
      * The severity of the network protection event (such as critical, high,
      * medium, low, or informational).
-     * 
+     * <p>
      * Note: This field is a string. Please use a severity_id field for severity
      * ID fields that are integer data types.
      */
     public void setIntrusionDetectionSeverity(String intrusionDetectionSeverity) {
         addField(INTRUSION_DETECTION_SEVERITY, intrusionDetectionSeverity);
     }
+
     public static String INTRUSION_DETECTION_SEVERITY = "severity";
 
     /**
@@ -892,6 +964,7 @@ public class SplunkCimLogEvent {
             String intrusionDetectionSignature) {
         addField(INTRUSION_DETECTION_SIGNATURE, intrusionDetectionSignature);
     }
+
     public static String INTRUSION_DETECTION_SIGNATURE = "signature";
 
     /**
@@ -902,6 +975,7 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionSrc(String intrusionDetectionSrc) {
         addField(INTRUSION_DETECTION_SRC, intrusionDetectionSrc);
     }
+
     public static String INTRUSION_DETECTION_SRC = "src";
 
     /**
@@ -910,12 +984,13 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionUser(String intrusionDetectionUser) {
         addField(INTRUSION_DETECTION_USER, intrusionDetectionUser);
     }
+
     public static String INTRUSION_DETECTION_USER = "user";
 
     /**
      * The vendor technology used to generate network protection data, such as
      * IDP, Providentia, and ASA.
-     * 
+     * <p>
      * Note: Required for all events dealing with network protection (Change
      * analysis, proxy, malware, intrusion detection, packet filtering, and
      * vulnerability).
@@ -923,6 +998,7 @@ public class SplunkCimLogEvent {
     public void setIntrusionDetectionVendor(String intrusionDetectionVendor) {
         addField(INTRUSION_DETECTION_VENDOR, intrusionDetectionVendor);
     }
+
     public static String INTRUSION_DETECTION_VENDOR = "vendor";
 
 
@@ -938,6 +1014,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_ACTION,
                 malwareEndpointProtectionAction);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_ACTION = "action";
 
     /**
@@ -948,6 +1025,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_DEST_NT_DOMAIN,
                 malwareEndpointProtectionDestNtDomain);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_DEST_NT_DOMAIN = "dest_nt_domain";
 
     /**
@@ -959,6 +1037,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_FILE_HASH,
                 malwareEndpointProtectionFileHash);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_FILE_HASH = "file_hash";
 
     /**
@@ -970,6 +1049,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_FILE_NAME,
                 malwareEndpointProtectionFileName);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_FILE_NAME = "file_name";
 
     /**
@@ -981,6 +1061,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_FILE_PATH,
                 malwareEndpointProtectionFilePath);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_FILE_PATH = "file_path";
 
     /**
@@ -992,6 +1073,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_PRODUCT,
                 malwareEndpointProtectionProduct);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_PRODUCT = "product";
 
     /**
@@ -1003,12 +1085,13 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_PRODUCT_VERSION,
                 malwareEndpointProtectionProductVersion);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_PRODUCT_VERSION = "product_version";
 
     /**
      * The name of the malware infection detected on the client (the src), such
      * as Trojan.Vundo,Spyware.Gaobot,W32.Nimbda).
-     * 
+     * <p>
      * Note: This field is a string. Please use a signature_id field for
      * signature ID fields that are integer data types.
      */
@@ -1017,6 +1100,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_SIGNATURE,
                 malwareEndpointProtectionSignature);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_SIGNATURE = "signature";
 
     /**
@@ -1028,6 +1112,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_SIGNATURE_VERSION,
                 malwareEndpointProtectionSignatureVersion);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_SIGNATURE_VERSION = "signature_version";
 
     /**
@@ -1039,6 +1124,7 @@ public class SplunkCimLogEvent {
             String malwareEndpointProtectionDest) {
         addField(MALWARE_ENDPOINT_PROTECTION_DEST, malwareEndpointProtectionDest);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_DEST = "dest";
 
     /**
@@ -1049,6 +1135,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_SRC_NT_DOMAIN,
                 malwareEndpointProtectionSrcNtDomain);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_SRC_NT_DOMAIN = "src_nt_domain";
 
     /**
@@ -1058,6 +1145,7 @@ public class SplunkCimLogEvent {
             String malwareEndpointProtectionUser) {
         addField(MALWARE_ENDPOINT_PROTECTION_USER, malwareEndpointProtectionUser);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_USER = "user";
 
     /**
@@ -1069,6 +1157,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_ENDPOINT_PROTECTION_VENDOR,
                 malwareEndpointProtectionVendor);
     }
+
     public static String MALWARE_ENDPOINT_PROTECTION_VENDOR = "vendor";
 
     // ----------------------------------
@@ -1078,7 +1167,7 @@ public class SplunkCimLogEvent {
     /**
      * The product name of the vendor technology generating network protection
      * data, such as IDP, Proventia, and ASA.
-     * 
+     * <p>
      * Note: Required for all events dealing with network protection (Change
      * analysis, proxy, malware, intrusion detection, packet filtering, and
      * vulnerability).
@@ -1088,12 +1177,13 @@ public class SplunkCimLogEvent {
         addField(MALWARE_NETWORK_PROTECTION_PRODUCT,
                 malwareNetworkProtectionProduct);
     }
+
     public static String MALWARE_NETWORK_PROTECTION_PRODUCT = "product";
 
     /**
      * The severity of the network protection event (such as critical, high,
      * medium, low, or informational).
-     * 
+     * <p>
      * Note: This field is a string. Please use a severity_id field for severity
      * ID fields that are integer data types.
      */
@@ -1102,12 +1192,13 @@ public class SplunkCimLogEvent {
         addField(MALWARE_NETWORK_PROTECTION_SEVERITY,
                 malwareNetworkProtectionSeverity);
     }
+
     public static String MALWARE_NETWORK_PROTECTION_SEVERITY = "severity";
 
     /**
      * The vendor technology used to generate network protection data, such as
      * IDP, Proventia, and ASA.
-     * 
+     * <p>
      * Note: Required for all events dealing with network protection (Change
      * analysis, proxy, malware, intrusion detection, packet filtering, and
      * vulnerability).
@@ -1117,6 +1208,7 @@ public class SplunkCimLogEvent {
         addField(MALWARE_NETWORK_PROTECTION_VENDOR,
                 malwareNetworkProtectionVendor);
     }
+
     public static String MALWARE_NETWORK_PROTECTION_VENDOR = "vendor";
 
 
@@ -1130,6 +1222,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficEssAction(String networkTrafficEssAction) {
         addField(NETWORK_TRAFFIC_ESS_ACTION, networkTrafficEssAction);
     }
+
     public static String NETWORK_TRAFFIC_ESS_ACTION = "action";
 
     /**
@@ -1138,12 +1231,13 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficEssDestPort(int networkTrafficEssDestPort) {
         addField(NETWORK_TRAFFIC_ESS_DEST_PORT, networkTrafficEssDestPort);
     }
+
     public static String NETWORK_TRAFFIC_ESS_DEST_PORT = "dest_port";
 
     /**
      * The product name of the vendor technology generating NetworkProtection
      * data, such as IDP, Proventia, and ASA.
-     * 
+     * <p>
      * Note: Required for all events dealing with network protection (Change
      * analysis, proxy, malware, intrusion detection, packet filtering, and
      * vulnerability).
@@ -1151,6 +1245,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficEssProduct(String networkTrafficEssProduct) {
         addField(NETWORK_TRAFFIC_ESS_PRODUCT, networkTrafficEssProduct);
     }
+
     public static String NETWORK_TRAFFIC_ESS_PRODUCT = "product";
 
     /**
@@ -1159,12 +1254,13 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficEssSrcPort(int networkTrafficEssSrcPort) {
         addField(NETWORK_TRAFFIC_ESS_SRC_PORT, networkTrafficEssSrcPort);
     }
+
     public static String NETWORK_TRAFFIC_ESS_SRC_PORT = "src_port";
 
     /**
      * The vendor technology used to generate NetworkProtection data, such as
      * IDP, Proventia, and ASA.
-     * 
+     * <p>
      * Note: Required for all events dealing with network protection (Change
      * analysis, proxy, malware, intrusion detection, packet filtering, and
      * vulnerability).
@@ -1172,6 +1268,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficEssVendor(String networkTrafficEssVendor) {
         addField(NETWORK_TRAFFIC_ESS_VENDOR, networkTrafficEssVendor);
     }
+
     public static String NETWORK_TRAFFIC_ESS_VENDOR = "vendor";
 
     // ----------------------------------
@@ -1187,7 +1284,9 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_APP_LAYER,
                 networkTrafficGenericAppLayer);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_APP_LAYER = "app_layer";
+
     /**
      * How many bytes this device/interface received.
      */
@@ -1195,6 +1294,7 @@ public class SplunkCimLogEvent {
             long networkTrafficGenericBytesIn) {
         addField(NETWORK_TRAFFIC_GENERIC_BYTES_IN, networkTrafficGenericBytesIn);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_BYTES_IN = "bytes_in";
 
 
@@ -1206,6 +1306,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_BYTES_OUT,
                 networkTrafficGenericBytesOut);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_BYTES_OUT = "bytes_out";
 
     /**
@@ -1215,6 +1316,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericChannel) {
         addField(NETWORK_TRAFFIC_GENERIC_CHANNEL, networkTrafficGenericChannel);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_CHANNEL = "channel";
 
     /**
@@ -1223,6 +1325,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericCve(String networkTrafficGenericCve) {
         addField(NETWORK_TRAFFIC_GENERIC_CVE, networkTrafficGenericCve);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_CVE = "cve";
 
     /**
@@ -1232,6 +1335,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericDestApp) {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_APP, networkTrafficGenericDestApp);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_APP = "dest_app";
 
     /**
@@ -1242,6 +1346,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_CNC_CHANNEL,
                 networkTrafficGenericDestCncChannel);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_CNC_CHANNEL = "dest_cnc_channel";
 
     /**
@@ -1252,6 +1357,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_CNC_NAME,
                 networkTrafficGenericDestCncName);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_CNC_NAME = "dest_cnc_name";
 
     /**
@@ -1262,6 +1368,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_CNC_PORT,
                 networkTrafficGenericDestCncPort);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_CNC_PORT = "dest_cnc_port";
 
     /**
@@ -1272,6 +1379,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_COUNTRY,
                 networkTrafficGenericDestCountry);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_COUNTRY = "dest_country";
 
     /**
@@ -1283,6 +1391,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_HOST,
                 networkTrafficGenericDestHost);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_HOST = "dest_host";
 
     /**
@@ -1292,6 +1401,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericDestInt) {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_INT, networkTrafficGenericDestInt);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_INT = "dest_int";
 
     /**
@@ -1301,6 +1411,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericDestIp) {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_IP, networkTrafficGenericDestIp);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_IP = "dest_ip";
 
     /**
@@ -1311,6 +1422,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_IPV6,
                 networkTrafficGenericDestIpv6);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_IPV6 = "dest_ipv6";
 
     /**
@@ -1319,6 +1431,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericDestLat(int networkTrafficGenericDestLat) {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_LAT, networkTrafficGenericDestLat);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_LAT = "dest_lat";
 
     /**
@@ -1329,6 +1442,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_LONG,
                 networkTrafficGenericDestLong);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_LONG = "dest_long";
 
     /**
@@ -1339,6 +1453,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericDestMac) {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_MAC, networkTrafficGenericDestMac);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_MAC = "dest_mac";
 
     /**
@@ -1349,6 +1464,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_NT_DOMAIN,
                 networkTrafficGenericDestNtDomain);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_NT_DOMAIN = "dest_nt_domain";
 
     /**
@@ -1359,6 +1475,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_NT_HOST,
                 networkTrafficGenericDestNtHost);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_NT_HOST = "dest_nt_host";
 
     /**
@@ -1369,6 +1486,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_PORT,
                 networkTrafficGenericDestPort);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_PORT = "dest_port";
 
     /**
@@ -1379,6 +1497,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_TRANSLATED_IP,
                 networkTrafficGenericDestTranslatedIp);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_TRANSLATED_IP = "dest_translated_ip";
 
     /**
@@ -1389,6 +1508,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_DEST_TRANSLATED_PORT,
                 networkTrafficGenericDestTranslatedPort);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_DEST_TRANSLATED_PORT = "dest_translated_port";
 
     /**
@@ -1399,6 +1519,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_IP_VERSION,
                 networkTrafficGenericIpVersion);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_IP_VERSION = "ip_version";
 
     /**
@@ -1409,6 +1530,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_OUTBOUND_INTERFACE,
                 networkTrafficGenericOutboundInterface);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_OUTBOUND_INTERFACE = "outbound_interface";
 
     /**
@@ -1419,6 +1541,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_PACKETS_IN,
                 networkTrafficGenericPacketsIn);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_PACKETS_IN = "packets_in";
 
     /**
@@ -1429,6 +1552,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_PACKETS_OUT,
                 networkTrafficGenericPacketsOut);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_PACKETS_OUT = "packets_out";
 
     /**
@@ -1438,6 +1562,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericProto(String networkTrafficGenericProto) {
         addField(NETWORK_TRAFFIC_GENERIC_PROTO, networkTrafficGenericProto);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_PROTO = "proto";
 
     /**
@@ -1448,6 +1573,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SESSION_ID,
                 networkTrafficGenericSessionId);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SESSION_ID = "session_id";
 
     /**
@@ -1456,6 +1582,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericSsid(String networkTrafficGenericSsid) {
         addField(NETWORK_TRAFFIC_GENERIC_SSID, networkTrafficGenericSsid);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SSID = "ssid";
 
     /**
@@ -1466,6 +1593,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_COUNTRY,
                 networkTrafficGenericSrcCountry);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_COUNTRY = "src_country";
 
     /**
@@ -1476,6 +1604,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericSrcHost) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_HOST, networkTrafficGenericSrcHost);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_HOST = "src_host";
 
     /**
@@ -1485,6 +1614,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericSrcInt) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_INT, networkTrafficGenericSrcInt);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_INT = "src_int";
 
     /**
@@ -1494,6 +1624,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericSrcIp(String networkTrafficGenericSrcIp) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_IP, networkTrafficGenericSrcIp);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_IP = "src_ip";
 
     /**
@@ -1503,6 +1634,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericSrcIpv6) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_IPV6, networkTrafficGenericSrcIpv6);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_IPV6 = "src_ipv6";
 
     /**
@@ -1511,6 +1643,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericSrcLat(int networkTrafficGenericSrcLat) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_LAT, networkTrafficGenericSrcLat);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_LAT = "src_lat";
 
     /**
@@ -1519,6 +1652,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericSrcLong(int networkTrafficGenericSrcLong) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_LONG, networkTrafficGenericSrcLong);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_LONG = "src_long";
 
     /**
@@ -1529,6 +1663,7 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericSrcMac) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_MAC, networkTrafficGenericSrcMac);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_MAC = "src_mac";
 
     /**
@@ -1539,6 +1674,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_NT_DOMAIN,
                 networkTrafficGenericSrcNtDomain);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_NT_DOMAIN = "src_nt_domain";
 
     /**
@@ -1549,6 +1685,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_NT_HOST,
                 networkTrafficGenericSrcNtHost);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_NT_HOST = "src_nt_host";
 
     /**
@@ -1557,6 +1694,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericSrcPort(int networkTrafficGenericSrcPort) {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_PORT, networkTrafficGenericSrcPort);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_PORT = "src_port";
 
     /**
@@ -1567,6 +1705,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_TRANSLATED_IP,
                 networkTrafficGenericSrcTranslatedIp);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_TRANSLATED_IP = "src_translated_ip";
 
     /**
@@ -1577,6 +1716,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SRC_TRANSLATED_PORT,
                 networkTrafficGenericSrcTranslatedPort);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SRC_TRANSLATED_PORT = "src_translated_port";
 
     /**
@@ -1587,6 +1727,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SYSLOG_ID,
                 networkTrafficGenericSyslogId);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SYSLOG_ID = "syslog_id";
 
     /**
@@ -1597,6 +1738,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_SYSLOG_PRIORITY,
                 networkTrafficGenericSyslogPriority);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_SYSLOG_PRIORITY = "syslog_priority";
 
     /**
@@ -1606,17 +1748,19 @@ public class SplunkCimLogEvent {
             String networkTrafficGenericTcpFlag) {
         addField(NETWORK_TRAFFIC_GENERIC_TCP_FLAG, networkTrafficGenericTcpFlag);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_TCP_FLAG = "tcp_flag";
 
     /**
      * The hex bit that specifies TCP 'type of service'
-     * 
+     *
      * @see <a href="http://en.wikipedia.org/wiki/Type_of_Service">Type of
-     *      Service</a>
+     * Service</a>
      */
     public void setNetworkTrafficGenericTos(String networkTrafficGenericTos) {
         addField(NETWORK_TRAFFIC_GENERIC_TOS, networkTrafficGenericTos);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_TOS = "tos";
 
     /**
@@ -1627,6 +1771,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_TRANSPORT,
                 networkTrafficGenericTransport);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_TRANSPORT = "transport";
 
     /**
@@ -1635,6 +1780,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericTtl(int networkTrafficGenericTtl) {
         addField(NETWORK_TRAFFIC_GENERIC_TTL, networkTrafficGenericTtl);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_TTL = "ttl";
 
     /**
@@ -1644,6 +1790,7 @@ public class SplunkCimLogEvent {
     public void setNetworkTrafficGenericVlanId(long networkTrafficGenericVlanId) {
         addField(NETWORK_TRAFFIC_GENERIC_VLAN_ID, networkTrafficGenericVlanId);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_VLAN_ID = "vlan_id";
 
     /**
@@ -1655,6 +1802,7 @@ public class SplunkCimLogEvent {
         addField(NETWORK_TRAFFIC_GENERIC_VLAN_NAME,
                 networkTrafficGenericVlanName);
     }
+
     public static String NETWORK_TRAFFIC_GENERIC_VLAN_NAME = "vlan_name";
 
 
@@ -1669,6 +1817,7 @@ public class SplunkCimLogEvent {
     public void setPacketFilteringAction(String packetFilteringAction) {
         addField(PACKET_FILTERING_ACTION, packetFilteringAction);
     }
+
     public static String PACKET_FILTERING_ACTION = "action";
 
     /**
@@ -1677,6 +1826,7 @@ public class SplunkCimLogEvent {
     public void setPacketFilteringDestPort(int packetFilteringDestPort) {
         addField(PACKET_FILTERING_DEST_PORT, packetFilteringDestPort);
     }
+
     public static String PACKET_FILTERING_DEST_PORT = "dest_port";
 
     /**
@@ -1685,6 +1835,7 @@ public class SplunkCimLogEvent {
     public void setPacketFilteringDirection(String packetFilteringDirection) {
         addField(PACKET_FILTERING_DIRECTION, packetFilteringDirection);
     }
+
     public static String PACKET_FILTERING_DIRECTION = "direction";
 
     /**
@@ -1694,6 +1845,7 @@ public class SplunkCimLogEvent {
     public void setPacketFilteringDvc(String packetFilteringDvc) {
         addField(PACKET_FILTERING_DVC, packetFilteringDvc);
     }
+
     public static String PACKET_FILTERING_DVC = "dvc";
 
     /**
@@ -1702,6 +1854,7 @@ public class SplunkCimLogEvent {
     public void setPacketFilteringRule(String packetFilteringRule) {
         addField(PACKET_FILTERING_RULE, packetFilteringRule);
     }
+
     public static String PACKET_FILTERING_RULE = "rule";
 
     /**
@@ -1710,6 +1863,7 @@ public class SplunkCimLogEvent {
     public void setPacketFilteringSvcPort(int packetFilteringSvcPort) {
         addField(PACKET_FILTERING_SVC_PORT, packetFilteringSvcPort);
     }
+
     public static String PACKET_FILTERING_SVC_PORT = "svc_port";
 
 
@@ -1723,6 +1877,7 @@ public class SplunkCimLogEvent {
     public void setProxyAction(String proxyAction) {
         addField(PROXY_ACTION, proxyAction);
     }
+
     public static String PROXY_ACTION = "action";
 
     /**
@@ -1731,6 +1886,7 @@ public class SplunkCimLogEvent {
     public void setProxyDest(String proxyDest) {
         addField(PROXY_DEST, proxyDest);
     }
+
     public static String PROXY_DEST = "dest";
 
     /**
@@ -1739,6 +1895,7 @@ public class SplunkCimLogEvent {
     public void setProxyHttpContentType(String proxyHttpContentType) {
         addField(PROXY_HTTP_CONTENT_TYPE, proxyHttpContentType);
     }
+
     public static String PROXY_HTTP_CONTENT_TYPE = "http_content_type";
 
     /**
@@ -1747,6 +1904,7 @@ public class SplunkCimLogEvent {
     public void setProxyHttpMethod(String proxyHttpMethod) {
         addField(PROXY_HTTP_METHOD, proxyHttpMethod);
     }
+
     public static String PROXY_HTTP_METHOD = "http_method";
 
     /**
@@ -1755,6 +1913,7 @@ public class SplunkCimLogEvent {
     public void setProxyHttpRefer(String proxyHttpRefer) {
         addField(PROXY_HTTP_REFER, proxyHttpRefer);
     }
+
     public static String PROXY_HTTP_REFER = "http_refer";
 
     /**
@@ -1763,6 +1922,7 @@ public class SplunkCimLogEvent {
     public void setProxyHttpResponse(int proxyHttpResponse) {
         addField(PROXY_HTTP_RESPONSE, proxyHttpResponse);
     }
+
     public static String PROXY_HTTP_RESPONSE = "http_response";
 
     /**
@@ -1771,6 +1931,7 @@ public class SplunkCimLogEvent {
     public void setProxyHttpUserAgent(String proxyHttpUserAgent) {
         addField(PROXY_HTTP_USER_AGENT, proxyHttpUserAgent);
     }
+
     public static String PROXY_HTTP_USER_AGENT = "http_user_agent";
 
     /**
@@ -1780,6 +1941,7 @@ public class SplunkCimLogEvent {
     public void setProxyProduct(String proxyProduct) {
         addField(PROXY_PRODUCT, proxyProduct);
     }
+
     public static String PROXY_PRODUCT = "product";
 
     /**
@@ -1788,6 +1950,7 @@ public class SplunkCimLogEvent {
     public void setProxySrc(String proxySrc) {
         addField(PROXY_SRC, proxySrc);
     }
+
     public static String PROXY_SRC = "src";
 
     /**
@@ -1796,6 +1959,7 @@ public class SplunkCimLogEvent {
     public void setProxyStatus(int proxyStatus) {
         addField(PROXY_STATUS, proxyStatus);
     }
+
     public static String PROXY_STATUS = "status";
 
     /**
@@ -1804,6 +1968,7 @@ public class SplunkCimLogEvent {
     public void setProxyUser(String proxyUser) {
         addField(PROXY_USER, proxyUser);
     }
+
     public static String PROXY_USER = "user";
 
     /**
@@ -1812,6 +1977,7 @@ public class SplunkCimLogEvent {
     public void setProxyUrl(String proxyUrl) {
         addField(PROXY_URL, proxyUrl);
     }
+
     public static String PROXY_URL = "url";
 
     /**
@@ -1821,6 +1987,7 @@ public class SplunkCimLogEvent {
     public void setProxyVendor(String proxyVendor) {
         addField(PROXY_VENDOR, proxyVendor);
     }
+
     public static String PROXY_VENDOR = "vendor";
 
 
@@ -1835,6 +2002,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterApp(String systemCenterApp) {
         addField(SYSTEM_CENTER_APP, systemCenterApp);
     }
+
     public static String SYSTEM_CENTER_APP = "app";
 
     /**
@@ -1844,6 +2012,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterFreembytes(long systemCenterFreembytes) {
         addField(SYSTEM_CENTER_FREEMBYTES, systemCenterFreembytes);
     }
+
     public static String SYSTEM_CENTER_FREEMBYTES = "FreeMBytes";
 
     /**
@@ -1853,6 +2022,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterKernelRelease(String systemCenterKernelRelease) {
         addField(SYSTEM_CENTER_KERNEL_RELEASE, systemCenterKernelRelease);
     }
+
     public static String SYSTEM_CENTER_KERNEL_RELEASE = "kernel_release";
 
     /**
@@ -1861,6 +2031,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterLabel(String systemCenterLabel) {
         addField(SYSTEM_CENTER_LABEL, systemCenterLabel);
     }
+
     public static String SYSTEM_CENTER_LABEL = "label";
 
     /**
@@ -1870,6 +2041,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterMount(String systemCenterMount) {
         addField(SYSTEM_CENTER_MOUNT, systemCenterMount);
     }
+
     public static String SYSTEM_CENTER_MOUNT = "mount";
 
     /**
@@ -1879,6 +2051,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterOs(String systemCenterOs) {
         addField(SYSTEM_CENTER_OS, systemCenterOs);
     }
+
     public static String SYSTEM_CENTER_OS = "os";
 
     /**
@@ -1889,6 +2062,7 @@ public class SplunkCimLogEvent {
         addField(SYSTEM_CENTER_PERCENTPROCESSORTIME,
                 systemCenterPercentprocessortime);
     }
+
     public static String SYSTEM_CENTER_PERCENTPROCESSORTIME = "PercentProcessorTime";
 
     /**
@@ -1897,6 +2071,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterSetlocaldefs(int systemCenterSetlocaldefs) {
         addField(SYSTEM_CENTER_SETLOCALDEFS, systemCenterSetlocaldefs);
     }
+
     public static String SYSTEM_CENTER_SETLOCALDEFS = "setlocaldefs";
 
     /**
@@ -1905,6 +2080,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterSelinux(String systemCenterSelinux) {
         addField(SYSTEM_CENTER_SELINUX, systemCenterSelinux);
     }
+
     public static String SYSTEM_CENTER_SELINUX = "selinux";
 
     /**
@@ -1913,6 +2089,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterSelinuxtype(String systemCenterSelinuxtype) {
         addField(SYSTEM_CENTER_SELINUXTYPE, systemCenterSelinuxtype);
     }
+
     public static String SYSTEM_CENTER_SELINUXTYPE = "selinuxtype";
 
     /**
@@ -1922,6 +2099,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterShell(String systemCenterShell) {
         addField(SYSTEM_CENTER_SHELL, systemCenterShell);
     }
+
     public static String SYSTEM_CENTER_SHELL = "shell";
 
     /**
@@ -1930,6 +2108,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterSrcPort(int systemCenterSrcPort) {
         addField(SYSTEM_CENTER_SRC_PORT, systemCenterSrcPort);
     }
+
     public static String SYSTEM_CENTER_SRC_PORT = "src_port";
 
     /**
@@ -1938,6 +2117,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterSshdProtocol(String systemCenterSshdProtocol) {
         addField(SYSTEM_CENTER_SSHD_PROTOCOL, systemCenterSshdProtocol);
     }
+
     public static String SYSTEM_CENTER_SSHD_PROTOCOL = "sshd_protocol";
 
     /**
@@ -1946,6 +2126,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterStartmode(String systemCenterStartmode) {
         addField(SYSTEM_CENTER_STARTMODE, systemCenterStartmode);
     }
+
     public static String SYSTEM_CENTER_STARTMODE = "Startmode";
 
     /**
@@ -1954,6 +2135,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterSystemuptime(long systemCenterSystemuptime) {
         addField(SYSTEM_CENTER_SYSTEMUPTIME, systemCenterSystemuptime);
     }
+
     public static String SYSTEM_CENTER_SYSTEMUPTIME = "SystemUptime";
 
     /**
@@ -1962,6 +2144,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterTotalmbytes(long systemCenterTotalmbytes) {
         addField(SYSTEM_CENTER_TOTALMBYTES, systemCenterTotalmbytes);
     }
+
     public static String SYSTEM_CENTER_TOTALMBYTES = "TotalMBytes";
 
     /**
@@ -1970,6 +2153,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterUsedmbytes(long systemCenterUsedmbytes) {
         addField(SYSTEM_CENTER_USEDMBYTES, systemCenterUsedmbytes);
     }
+
     public static String SYSTEM_CENTER_USEDMBYTES = "UsedMBytes";
 
     /**
@@ -1978,6 +2162,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterUser(String systemCenterUser) {
         addField(SYSTEM_CENTER_USER, systemCenterUser);
     }
+
     public static String SYSTEM_CENTER_USER = "user";
 
     /**
@@ -1986,6 +2171,7 @@ public class SplunkCimLogEvent {
     public void setSystemCenterUpdates(long systemCenterUpdates) {
         addField(SYSTEM_CENTER_UPDATES, systemCenterUpdates);
     }
+
     public static String SYSTEM_CENTER_UPDATES = "updates";
 
 
@@ -2001,6 +2187,7 @@ public class SplunkCimLogEvent {
     public void setTrafficDest(String trafficDest) {
         addField(TRAFFIC_DEST, trafficDest);
     }
+
     public static String TRAFFIC_DEST = "dest";
 
     /**
@@ -2010,6 +2197,7 @@ public class SplunkCimLogEvent {
     public void setTrafficDvc(String trafficDvc) {
         addField(TRAFFIC_DVC, trafficDvc);
     }
+
     public static String TRAFFIC_DVC = "dvc";
 
     /**
@@ -2020,6 +2208,7 @@ public class SplunkCimLogEvent {
     public void setTrafficSrc(String trafficSrc) {
         addField(TRAFFIC_SRC, trafficSrc);
     }
+
     public static String TRAFFIC_SRC = "src";
 
 
@@ -2033,6 +2222,7 @@ public class SplunkCimLogEvent {
     public void setUpdatePackage(String updatePackage) {
         addField(UPDATE_PACKAGE, updatePackage);
     }
+
     public static String UPDATE_PACKAGE = "package";
 
 
@@ -2048,6 +2238,7 @@ public class SplunkCimLogEvent {
             String userInfoUpdatesAffectedUser) {
         addField(USER_INFO_UPDATES_AFFECTED_USER, userInfoUpdatesAffectedUser);
     }
+
     public static String USER_INFO_UPDATES_AFFECTED_USER = "affected_user";
 
     /**
@@ -2058,6 +2249,7 @@ public class SplunkCimLogEvent {
         addField(USER_INFO_UPDATES_AFFECTED_USER_GROUP,
                 userInfoUpdatesAffectedUserGroup);
     }
+
     public static String USER_INFO_UPDATES_AFFECTED_USER_GROUP = "affected_user_group";
 
     /**
@@ -2068,6 +2260,7 @@ public class SplunkCimLogEvent {
         addField(USER_INFO_UPDATES_AFFECTED_USER_GROUP_ID,
                 userInfoUpdatesAffectedUserGroupId);
     }
+
     public static String USER_INFO_UPDATES_AFFECTED_USER_GROUP_ID = "affected_user_group_id";
 
     /**
@@ -2078,6 +2271,7 @@ public class SplunkCimLogEvent {
         addField(USER_INFO_UPDATES_AFFECTED_USER_ID,
                 userInfoUpdatesAffectedUserId);
     }
+
     public static String USER_INFO_UPDATES_AFFECTED_USER_ID = "affected_user_id";
 
     /**
@@ -2088,6 +2282,7 @@ public class SplunkCimLogEvent {
         addField(USER_INFO_UPDATES_AFFECTED_USER_PRIVILEGE,
                 userInfoUpdatesAffectedUserPrivilege);
     }
+
     public static String USER_INFO_UPDATES_AFFECTED_USER_PRIVILEGE = "affected_user_privilege";
 
     /**
@@ -2096,6 +2291,7 @@ public class SplunkCimLogEvent {
     public void setUserInfoUpdatesUser(String userInfoUpdatesUser) {
         addField(USER_INFO_UPDATES_USER, userInfoUpdatesUser);
     }
+
     public static String USER_INFO_UPDATES_USER = "user";
 
     /**
@@ -2105,6 +2301,7 @@ public class SplunkCimLogEvent {
     public void setUserInfoUpdatesUserGroup(String userInfoUpdatesUserGroup) {
         addField(USER_INFO_UPDATES_USER_GROUP, userInfoUpdatesUserGroup);
     }
+
     public static String USER_INFO_UPDATES_USER_GROUP = "user_group";
 
     /**
@@ -2113,6 +2310,7 @@ public class SplunkCimLogEvent {
     public void setUserInfoUpdatesUserGroupId(int userInfoUpdatesUserGroupId) {
         addField(USER_INFO_UPDATES_USER_GROUP_ID, userInfoUpdatesUserGroupId);
     }
+
     public static String USER_INFO_UPDATES_USER_GROUP_ID = "user_group_id";
 
     /**
@@ -2121,6 +2319,7 @@ public class SplunkCimLogEvent {
     public void setUserInfoUpdatesUserId(int userInfoUpdatesUserId) {
         addField(USER_INFO_UPDATES_USER_ID, userInfoUpdatesUserId);
     }
+
     public static String USER_INFO_UPDATES_USER_ID = "user_id";
 
     /**
@@ -2131,6 +2330,7 @@ public class SplunkCimLogEvent {
             String userInfoUpdatesUserPrivilege) {
         addField(USER_INFO_UPDATES_USER_PRIVILEGE, userInfoUpdatesUserPrivilege);
     }
+
     public static String USER_INFO_UPDATES_USER_PRIVILEGE = "user_privilege";
 
     /**
@@ -2140,6 +2340,7 @@ public class SplunkCimLogEvent {
     public void setUserInfoUpdatesUserSubject(String userInfoUpdatesUserSubject) {
         addField(USER_INFO_UPDATES_USER_SUBJECT, userInfoUpdatesUserSubject);
     }
+
     public static String USER_INFO_UPDATES_USER_SUBJECT = "user_subject";
 
     /**
@@ -2148,6 +2349,7 @@ public class SplunkCimLogEvent {
     public void setUserInfoUpdatesUserSubjectId(int userInfoUpdatesUserSubjectId) {
         addField(USER_INFO_UPDATES_USER_SUBJECT_ID, userInfoUpdatesUserSubjectId);
     }
+
     public static String USER_INFO_UPDATES_USER_SUBJECT_ID = "user_subject_id";
 
     /**
@@ -2159,6 +2361,7 @@ public class SplunkCimLogEvent {
         addField(USER_INFO_UPDATES_USER_SUBJECT_PRIVILEGE,
                 userInfoUpdatesUserSubjectPrivilege);
     }
+
     public static String USER_INFO_UPDATES_USER_SUBJECT_PRIVILEGE = "user_subject_privilege";
 
 
@@ -2172,6 +2375,7 @@ public class SplunkCimLogEvent {
     public void setVulnerabilityCategory(String vulnerabilityCategory) {
         addField(VULNERABILITY_CATEGORY, vulnerabilityCategory);
     }
+
     public static String VULNERABILITY_CATEGORY = "category";
 
     /**
@@ -2182,6 +2386,7 @@ public class SplunkCimLogEvent {
     public void setVulnerabilityDest(String vulnerabilityDest) {
         addField(VULNERABILITY_DEST, vulnerabilityDest);
     }
+
     public static String VULNERABILITY_DEST = "dest";
 
     /**
@@ -2192,6 +2397,7 @@ public class SplunkCimLogEvent {
     public void setVulnerabilityOs(String vulnerabilityOs) {
         addField(VULNERABILITY_OS, vulnerabilityOs);
     }
+
     public static String VULNERABILITY_OS = "os";
 
     /**
@@ -2200,6 +2406,7 @@ public class SplunkCimLogEvent {
     public void setVulnerabilitySeverity(String vulnerabilitySeverity) {
         addField(VULNERABILITY_SEVERITY, vulnerabilitySeverity);
     }
+
     public static String VULNERABILITY_SEVERITY = "severity";
 
     /**
@@ -2209,6 +2416,7 @@ public class SplunkCimLogEvent {
     public void setVulnerabilitySignature(String vulnerabilitySignature) {
         addField(VULNERABILITY_SIGNATURE, vulnerabilitySignature);
     }
+
     public static String VULNERABILITY_SIGNATURE = "signature";
 
 
@@ -2222,6 +2430,7 @@ public class SplunkCimLogEvent {
     public void setWindowsAdminObjectName(String windowsAdminObjectName) {
         addField(WINDOWS_ADMIN_OBJECT_NAME, windowsAdminObjectName);
     }
+
     public static String WINDOWS_ADMIN_OBJECT_NAME = "object_name";
 
     /**
@@ -2230,6 +2439,7 @@ public class SplunkCimLogEvent {
     public void setWindowsAdminObjectType(String windowsAdminObjectType) {
         addField(WINDOWS_ADMIN_OBJECT_TYPE, windowsAdminObjectType);
     }
+
     public static String WINDOWS_ADMIN_OBJECT_TYPE = "object_type";
 
     /**
@@ -2238,5 +2448,6 @@ public class SplunkCimLogEvent {
     public void setWindowsAdminObjectHandle(String windowsAdminObjectHandle) {
         addField(WINDOWS_ADMIN_OBJECT_HANDLE, windowsAdminObjectHandle);
     }
+
     public static String WINDOWS_ADMIN_OBJECT_HANDLE = "object_handle";
 }
