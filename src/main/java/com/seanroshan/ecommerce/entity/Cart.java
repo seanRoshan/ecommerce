@@ -63,24 +63,21 @@ public class Cart {
     }
 
     public void addItem(Item item) {
-        if (items == null) {
+        if (items == null || items.isEmpty()) {
             items = new ArrayList<>();
-        }
-        items.add(item);
-        if (total == null) {
             total = new BigDecimal(0);
         }
+        items.add(item);
         total = total.add(item.getPrice());
     }
 
     public void removeItem(Item item) {
-        if (items == null) {
+        if (items == null || items.isEmpty()) {
             items = new ArrayList<>();
+            total = new BigDecimal(0);
+            return;
         }
         items.remove(item);
-        if (total == null) {
-            total = new BigDecimal(0);
-        }
         total = total.subtract(item.getPrice());
     }
 
